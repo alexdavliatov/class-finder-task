@@ -30,7 +30,7 @@ shadowJar.apply {
   manifest.attributes.apply {
     put("Implementation-Title", "Class finder task")
     put("Implementation-Version", "1.0.0")
-    put("Main-Class", "ru.adavliatov.task.classfinder.AppKt")
+    put("Main-Class", "ru.adavliatov.task.classfinder.ClassFinder")
 
     archiveName = "class-finder-task.jar"
   }
