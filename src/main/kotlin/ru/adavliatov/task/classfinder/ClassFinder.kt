@@ -6,6 +6,8 @@ import ru.adavliatov.task.classfinder.domain.Input
 import ru.adavliatov.task.classfinder.domain.Item
 import ru.adavliatov.task.classfinder.domain.ItemWithPrepared
 import ru.adavliatov.task.classfinder.usecase.*
+import ru.adavliatov.task.classfinder.usecase.handler.Handler
+import ru.adavliatov.task.classfinder.usecase.handler.invoke
 
 //notes:
 //+package names ignored
@@ -26,7 +28,7 @@ class ClassFinder(private val config: Config) {
 
         return items
             .map {
-                it.prepared { item -> item }
+                it.prepared(config.itemHandlers())
             }
             .filter { (_, preparedItem) -> searchStrategy.satisfies(preparedItem) }
             .sortedBy { it.preparedItem }
@@ -34,7 +36,7 @@ class ClassFinder(private val config: Config) {
     }
 
     companion object {
-        fun Item.prepared(itemHandler: ItemHandler) = ItemWithPrepared(this, itemHandler(this))
+        fun Item.prepared(itemHandler: Handler<Item>) = ItemWithPrepared(this, itemHandler(this))
     }
 }
 
@@ -53,13 +55,10 @@ val config = config {
 
 fun main() {
     val input: Input = "abc"
-    val items = sequenceOf("abc").mapNotNull { it.map(config.itemHandlers) }
+    val items = sequenceOf("abc").mapNotNull(config.itemHandlers())
 
     ClassFinder(config)
         .find(input, items)
         .joinToString("\n")
         .run { println(this) }
 }
-
-fun Item?.map(handlers: Iterable<ItemHandler>) = handlers.fold(this) { acc, handler -> handler(acc) }
-
