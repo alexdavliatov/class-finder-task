@@ -1,6 +1,6 @@
-package ru.adavliatov.task.classfinder.item.handler
+package ru.adavliatov.task.classfinder.usecase
 
-import ru.adavliatov.task.classfinder.item.Item
+import ru.adavliatov.task.classfinder.domain.Item
 
 typealias ItemHandler = (Item?) -> Item?
 

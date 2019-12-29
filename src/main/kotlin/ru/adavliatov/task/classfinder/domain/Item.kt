@@ -1,4 +1,4 @@
-package ru.adavliatov.task.classfinder.item
+package ru.adavliatov.task.classfinder.domain
 
 typealias Item = String
 
