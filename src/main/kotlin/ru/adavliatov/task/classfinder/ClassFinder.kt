@@ -23,6 +23,7 @@ class ClassFinder(private val config: Config) {
 
     fun find(input: Input, items: Sequence<Item>): Sequence<Item> {
         val searchStrategy = config.strategyFor(input)
+
         return items
             .map {
                 it.prepared { item -> item }
@@ -33,8 +34,7 @@ class ClassFinder(private val config: Config) {
     }
 
     companion object {
-        fun Item.prepared(itemHandler: ItemHandler): ItemWithPrepared =
-            ItemWithPrepared(this, itemHandler(this))
+        fun Item.prepared(itemHandler: ItemHandler) = ItemWithPrepared(this, itemHandler(this))
     }
 }
 
@@ -54,6 +54,7 @@ val config = config {
 fun main() {
     val input: Input = "abc"
     val items = sequenceOf("abc").mapNotNull { it.map(config.itemHandlers) }
+
     ClassFinder(config)
         .find(input, items)
         .joinToString("\n")
