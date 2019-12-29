@@ -8,7 +8,10 @@ interface SearchStrategy {
     fun satisfies(item: Item?): Boolean = false
 }
 
-class CommonSearchStrategy : SearchStrategy
+class CommonSearchStrategy : SearchStrategy {
+    override fun applicableFor(input: Input) = true
+}
+
 class CaseInsensitiveSearchStrategy : SearchStrategy {
     override fun applicableFor(input: Input): Boolean {
         val trimmed = input.trim()
@@ -26,5 +29,5 @@ class EndsWithSearchStrategy : SearchStrategy {
 }
 
 class WildcardSearchStrategy : SearchStrategy {
-    override fun applicableFor(input: Input): Boolean = input.contains('*')
+    override fun applicableFor(input: Input) = input.contains('*')
 }
