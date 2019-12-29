@@ -4,7 +4,7 @@ import ru.adavliatov.task.classfinder.domain.Item
 
 typealias ItemHandler = (Item?) -> Item?
 
-class NonBlankToNullHandler : ItemHandler {
+class NonBlankToNullItemHandler : ItemHandler {
     override fun invoke(item: Item?): Item? = if (item.isNullOrBlank()) null else item
 }
 

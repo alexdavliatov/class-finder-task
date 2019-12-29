@@ -46,7 +46,7 @@ val config = config {
         plus(CommonSearchStrategy())
     }
     itemHandlers {
-        plus(NonBlankToNullHandler())
+        plus(NonBlankToNullItemHandler())
         plus(PackageRemoverHandler())
     }
 }
