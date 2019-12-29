@@ -1,19 +1,21 @@
 package ru.adavliatov.task.classfinder.config
 
-import ru.adavliatov.task.classfinder.item.handler.ItemHandler
-import ru.adavliatov.task.classfinder.search.SearchStrategy
+import ru.adavliatov.task.classfinder.domain.Input
+import ru.adavliatov.task.classfinder.domain.SearchStrategyNotFoundError
+import ru.adavliatov.task.classfinder.usecase.ItemHandler
+import ru.adavliatov.task.classfinder.usecase.SearchStrategy
 
 data class Config(
     val searchStrategies: List<SearchStrategy>,
     val itemHandlers: List<ItemHandler>
 ) {
-    fun strategyFor(@Suppress("UNUSED_PARAMETER") input: String): SearchStrategy =
-        TODO("strategyFor not implemented yet")
+    fun strategyFor(input: Input): SearchStrategy = searchStrategies.firstOrNull { it.applicableFor(input) }
+        ?: throw SearchStrategyNotFoundError(input)
 }
 
 class ConfigDSL {
-    var searchStrategies: List<SearchStrategy> = listOf()
-    var itemHandlers: List<ItemHandler> = listOf()
+    private var searchStrategies: List<SearchStrategy> = listOf()
+    private var itemHandlers: List<ItemHandler> = listOf()
 
     fun searchStrategies(body: SearchStrategies.() -> Unit) {
         searchStrategies = SearchStrategies().apply(body)
