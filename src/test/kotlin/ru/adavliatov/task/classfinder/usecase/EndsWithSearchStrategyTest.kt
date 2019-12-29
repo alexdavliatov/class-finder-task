@@ -4,12 +4,12 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class CaseInsensitiveSearchStrategyTest {
-    private val strategy = CaseInsensitiveSearchStrategy()
+class EndsWithSearchStrategyTest {
+    private val strategy = EndsWithSearchStrategy()
 
     @Test
     fun `should be applicable for valid input`() {
-        assertTrue(strategy.applicableFor("abc"))
+        assertTrue(strategy.applicableFor("abc   "))
         assertTrue(strategy.applicableFor("  abd  "))
     }
 
@@ -18,5 +18,7 @@ class CaseInsensitiveSearchStrategyTest {
         assertFalse(strategy.applicableFor(""))
         assertFalse(strategy.applicableFor("    "))
         assertFalse(strategy.applicableFor("aBd"))
+        assertFalse(strategy.applicableFor("abd"))
     }
+
 }

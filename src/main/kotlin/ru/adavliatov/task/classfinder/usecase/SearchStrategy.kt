@@ -18,5 +18,9 @@ class CaseInsensitiveSearchStrategy : SearchStrategy {
     }
 }
 
-class EndsWithSearchStrategy : SearchStrategy
-class WildcardSearchStrategy : SearchStrategy
+class EndsWithSearchStrategy : SearchStrategy {
+    override fun applicableFor(input: Input): Boolean {
+        val trimmedEnd = input.trimEnd()
+        return trimmedEnd.isNotEmpty() && input != input.trimEnd()
+    }
+}
