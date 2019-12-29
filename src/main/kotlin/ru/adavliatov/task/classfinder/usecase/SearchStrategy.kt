@@ -9,6 +9,14 @@ interface SearchStrategy {
 }
 
 class CommonSearchStrategy : SearchStrategy
-class CaseInsensitiveSearchStrategy : SearchStrategy
+class CaseInsensitiveSearchStrategy : SearchStrategy {
+    override fun applicableFor(input: Input): Boolean {
+        val trimmed = input.trim()
+        val lowered = trimmed.toLowerCase()
+
+        return trimmed.isNotEmpty() && trimmed == lowered
+    }
+}
+
 class EndsWithSearchStrategy : SearchStrategy
 class WildcardSearchStrategy : SearchStrategy
