@@ -24,3 +24,7 @@ class EndsWithSearchStrategy : SearchStrategy {
         return trimmedEnd.isNotEmpty() && input != input.trimEnd()
     }
 }
+
+class WildcardSearchStrategy : SearchStrategy {
+    override fun applicableFor(input: Input): Boolean = input.contains('*')
+}
