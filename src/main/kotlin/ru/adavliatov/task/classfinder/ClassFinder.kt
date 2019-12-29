@@ -43,25 +43,25 @@ class ClassFinder(private val config: Config) {
 
 val config = config {
     searchStrategies {
-        plus(EndsWithSearchStrategy())
-        plus(CaseInsensitiveSearchStrategy())
-        plus(WildcardSearchStrategy())
-        plus(CommonSearchStrategy())
+        plusAssign(EndsWithSearchStrategy())
+        plusAssign(CaseInsensitiveSearchStrategy())
+        plusAssign(WildcardSearchStrategy())
+        plusAssign(CommonSearchStrategy())
     }
     inputHandlers {
-        plus(NonBlankToNullInputHandler())
-        plus(TrimLeftHandler())
-        plus(MiddleWhitespacesToNullInputHandler())
+        plusAssign(NonBlankToNullInputHandler())
+        plusAssign(TrimLeftHandler())
+        plusAssign(MiddleWhitespacesToNullInputHandler())
     }
     itemHandlers {
-        plus(NonBlankToNullItemHandler())
-        plus(PackageRemoverHandler())
+        plusAssign(NonBlankToNullItemHandler())
+        plusAssign(PackageRemoverHandler())
     }
 }
 
 fun main() {
     val input = " "
-    val handledInput: Input = "abc".let(config.inputHandlers()) ?: throw InvalidInputError(input)
+    val handledInput: Input = input.let(config.inputHandlers()) ?: throw InvalidInputError(input)
     val handledItems = sequenceOf("abc").mapNotNull(config.itemHandlers())
 
     ClassFinder(config)
