@@ -15,6 +15,8 @@ repositories {
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
+
+  testImplementation(group = "junit", name = "junit", version = "4.12")
 }
 
 val compileKotlin: KotlinCompile by tasks
