@@ -3,6 +3,7 @@ package ru.adavliatov.task.classfinder
 import ru.adavliatov.task.classfinder.config.Config
 import ru.adavliatov.task.classfinder.config.ConfigDSL.Companion.config
 import ru.adavliatov.task.classfinder.domain.Input
+import ru.adavliatov.task.classfinder.domain.InvalidInputError
 import ru.adavliatov.task.classfinder.domain.Item
 import ru.adavliatov.task.classfinder.domain.ItemWithPrepared
 import ru.adavliatov.task.classfinder.usecase.*
@@ -47,6 +48,11 @@ val config = config {
         plus(WildcardSearchStrategy())
         plus(CommonSearchStrategy())
     }
+    inputHandlers {
+        plus(NonBlankToNullInputHandler())
+        plus(TrimLeftHandler())
+        plus(MiddleWhitespacesToNullInputHandler())
+    }
     itemHandlers {
         plus(NonBlankToNullItemHandler())
         plus(PackageRemoverHandler())
@@ -54,11 +60,12 @@ val config = config {
 }
 
 fun main() {
-    val input: Input = "abc"
-    val items = sequenceOf("abc").mapNotNull(config.itemHandlers())
+    val input = " "
+    val handledInput: Input = "abc".let(config.inputHandlers()) ?: throw InvalidInputError(input)
+    val handledItems = sequenceOf("abc").mapNotNull(config.itemHandlers())
 
     ClassFinder(config)
-        .find(input, items)
+        .find(handledInput, handledItems)
         .joinToString("\n")
         .run { println(this) }
 }
