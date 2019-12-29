@@ -2,15 +2,10 @@ package ru.adavliatov.task.classfinder
 
 import ru.adavliatov.task.classfinder.config.Config
 import ru.adavliatov.task.classfinder.config.ConfigDSL.Companion.config
-import ru.adavliatov.task.classfinder.item.Item
-import ru.adavliatov.task.classfinder.item.ItemWithPrepared
-import ru.adavliatov.task.classfinder.item.handler.ItemHandler
-import ru.adavliatov.task.classfinder.item.handler.NonBlankToNullHandler
-import ru.adavliatov.task.classfinder.item.handler.PackageRemoverHandler
-import ru.adavliatov.task.classfinder.search.CaseInsensitiveSearchStrategy
-import ru.adavliatov.task.classfinder.search.CommonSearchStrategy
-import ru.adavliatov.task.classfinder.search.EndsWithSearchStrategy
-import ru.adavliatov.task.classfinder.search.WildcardSearchStrategy
+import ru.adavliatov.task.classfinder.domain.Input
+import ru.adavliatov.task.classfinder.domain.Item
+import ru.adavliatov.task.classfinder.domain.ItemWithPrepared
+import ru.adavliatov.task.classfinder.usecase.*
 
 //notes:
 //+package names ignored
@@ -26,7 +21,7 @@ import ru.adavliatov.task.classfinder.search.WildcardSearchStrategy
 
 class ClassFinder(private val config: Config) {
 
-    fun find(input: String, items: Sequence<Item>): Sequence<Item> {
+    fun find(input: Input, items: Sequence<Item>): Sequence<Item> {
         val searchStrategy = config.strategyFor(input)
         return items
             .map {
@@ -38,7 +33,8 @@ class ClassFinder(private val config: Config) {
     }
 
     companion object {
-        fun Item.prepared(itemHandler: ItemHandler): ItemWithPrepared = ItemWithPrepared(this, itemHandler(this))
+        fun Item.prepared(itemHandler: ItemHandler): ItemWithPrepared =
+            ItemWithPrepared(this, itemHandler(this))
     }
 }
 
@@ -56,7 +52,7 @@ val config = config {
 }
 
 fun main() {
-    val input = "abc"
+    val input: Input = "abc"
     val items = sequenceOf("abc").mapNotNull { it.map(config.itemHandlers) }
     ClassFinder(config)
         .find(input, items)
