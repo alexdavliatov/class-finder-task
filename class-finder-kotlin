@@ -1,0 +1,13 @@
+#/bin/bash
+
+if [ "$1" != "" ]; then
+    if [ "$2" != "" ]; then
+        ./gradlew clean shadow && java -jar build/libs/class-finder-task.jar $1 $2
+    else
+        echo "Search string is empty"
+        echo "Usage: ./class-finder-kotlin <path to classes: classes.txt> <search: 'FoB*ar*rd*Baz_'>"
+    fi
+else
+    echo "Path to classes is empty"
+    echo "Usage: ./class-finder-kotlin <path to classes: classes.txt> <search: 'FoB*ar*rd*Baz_'>"
+fi
