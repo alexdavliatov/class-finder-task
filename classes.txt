@@ -1,0 +1,7 @@
+a.b.c.d.FooBarBaz
+a.b.c.d.FooBar
+a.b.c.d.FuxFooBxarCprqDrdxBaz
+a.b.c.d.FuxFooBxarCprqDrdBaz
+a.b.c.d.FuxFooBxarCprqDrdEBaz
+a.b.c.d.FuxFooBxarCprqDrdyTBaz
+a.b.c.d.FuxFooBxarcprqdrdyTBa
