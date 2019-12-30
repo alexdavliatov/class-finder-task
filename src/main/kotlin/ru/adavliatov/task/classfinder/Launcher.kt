@@ -1,5 +1,6 @@
 package ru.adavliatov.task.classfinder
 
+import ru.adavliatov.task.classfinder.Configs.default
 import ru.adavliatov.task.classfinder.config.ConfigDSL.Companion.config
 import ru.adavliatov.task.classfinder.domain.Input
 import ru.adavliatov.task.classfinder.domain.InvalidInputError
@@ -7,21 +8,23 @@ import ru.adavliatov.task.classfinder.usecase.*
 import ru.adavliatov.task.classfinder.usecase.handler.HandlerExtensions.invoke
 import java.io.File
 
-val config = config {
-    searchStrategies {
-        plusAssign(EndsWithSearchStrategy())
-        plusAssign(CaseInsensitiveSearchStrategy())
-        plusAssign(WildcardSearchStrategy())
-        plusAssign(StartsWithSearchStrategy())
-    }
-    inputHandlers {
-        plusAssign(NonBlankToNullInputHandler())
-        plusAssign(TrimLeftHandler())
-        plusAssign(MiddleWhitespacesToNullInputHandler())
-    }
-    itemHandlers {
-        plusAssign(NonBlankToNullItemHandler())
-        plusAssign(PackageRemoverHandler())
+object Configs {
+    val default = config {
+        searchStrategies {
+            plusAssign(EndsWithSearchStrategy())
+            plusAssign(CaseInsensitiveSearchStrategy())
+            plusAssign(WildcardSearchStrategy())
+            plusAssign(StartsWithSearchStrategy())
+        }
+        inputHandlers {
+            plusAssign(NonBlankToNullInputHandler())
+            plusAssign(TrimLeftHandler())
+            plusAssign(MiddleWhitespacesToNullInputHandler())
+        }
+        itemHandlers {
+            plusAssign(NonBlankToNullItemHandler())
+            plusAssign(PackageRemoverHandler())
+        }
     }
 }
 
@@ -33,7 +36,7 @@ fun main(vararg args: String) {
     }
     val classesPath = args[0]
     val input = args[1]
-    val handledInput: Input = input.let(config.inputHandlers()) ?: throw InvalidInputError(input)
+    val handledInput: Input = input.let(default.inputHandlers()) ?: throw InvalidInputError(input)
     val classesFile = File(classesPath)
     if (!classesFile.exists()) {
         System.err.println(errorMessage)
@@ -43,7 +46,7 @@ fun main(vararg args: String) {
 
     classesFile
         .useLines {
-            ClassFinder(config)
+            ClassFinder(default)
                 .find(handledInput, it)
                 .joinToString("\n")
                 .run { println(this) }
